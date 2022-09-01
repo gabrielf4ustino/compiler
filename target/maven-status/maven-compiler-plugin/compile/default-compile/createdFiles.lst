@@ -1,0 +1,4 @@
+br\compilador\language\LanguageToken.class
+br\compilador\lexicalanalyzer\LexicalAnalyzerGenerator.class
+br\compilador\Main.class
+br\compilador\lexicalanalyzer\LexicalAnalyzer.class
