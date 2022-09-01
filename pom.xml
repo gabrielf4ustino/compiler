@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.compilador</groupId>
-    <artifactId>compilador</artifactId>
+    <groupId>br.compiler</groupId>
+    <artifactId>compiler</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
@@ -33,6 +33,6 @@
         <maven.compiler.target>18</maven.compiler.target>
         <maven.compiler.release>18</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exec.mainClass>br.compilador.Main</exec.mainClass>
+        <exec.mainClass>br.compiler.Main</exec.mainClass>
     </properties>
 </project>

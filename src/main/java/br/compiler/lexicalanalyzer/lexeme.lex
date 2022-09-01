@@ -1,6 +1,6 @@
-package br.compilador.lexicalanalyzer;
+package br.compiler.lexicalanalyzer;
 
-import br.compilador.language.LanguageToken;
+import br.compiler.language.LanguageToken;
 
 %%
 
@@ -39,4 +39,4 @@ PARENTHESES = ["("|")"]
 {ARITHMETICOPERATORS}         { return createToken("Operador de soma", yytext(), yyline, yycolumn); }
 {INTEGER}                     { return createToken("Número Inteiro", yytext(), yyline, yycolumn); }
 
-. { System.out.println("Caractere inválido " + yytext() + " na linha " + yyline + ", coluna " +yycolumn); }
+. { return createToken("Caractere inválido", yytext(), yyline, yycolumn); }

@@ -1,4 +1,4 @@
-package br.compilador.language;
+package br.compiler.language;
 
 import lombok.AllArgsConstructor;
 
@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 public class LanguageToken {
 
     public String name;
+
     public String value;
+
     public Integer line;
+
     public Integer column;
 }
