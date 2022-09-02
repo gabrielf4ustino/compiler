@@ -96,10 +96,10 @@ public class LexicalAnalyzer {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\1\3\1\4\1\5\2\6\3\7"+
-    "\1\4\1\10\2\7\1\11";
+    "\1\4\1\10\2\7";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[16];
+    int [] result = new int[15];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -125,10 +125,10 @@ public class LexicalAnalyzer {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\20\0\20\0\20\0\20\0\20\0\20\0\40"+
-    "\0\60\0\100\0\120\0\60\0\60\0\140\0\160\0\60";
+    "\0\60\0\100\0\120\0\60\0\60\0\140\0\160";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[16];
+    int [] result = new int[15];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -154,7 +154,7 @@ public class LexicalAnalyzer {
     "\1\2\1\3\1\4\1\0\1\5\1\6\1\7\1\10"+
     "\4\11\1\12\1\11\1\13\1\14\26\0\2\10\16\0"+
     "\12\11\6\0\4\11\1\15\5\11\6\0\5\11\1\16"+
-    "\4\11\6\0\3\11\1\17\6\11\6\0\7\11\1\20"+
+    "\4\11\6\0\3\11\1\17\6\11\6\0\7\11\1\15"+
     "\2\11";
 
   private static int [] zzUnpackTrans() {
@@ -201,10 +201,10 @@ public class LexicalAnalyzer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\6\11\11\1";
+    "\1\0\6\11\10\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[16];
+    int [] result = new int[15];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -686,47 +686,42 @@ private LanguageToken createToken(String name, String value, Integer line, Integ
             { return createToken("Caractere inválido", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 10: break;
+          case 9: break;
           case 2:
-            { return createToken("Espaço em branco", null, yyline, yycolumn);
+            { return createToken("Espaço em branco", "", yyline, yycolumn);
+            }
+            // fall through
+          case 10: break;
+          case 3:
+            { return createToken("Nova linha", "", yyline + 1, yycolumn);
             }
             // fall through
           case 11: break;
-          case 3:
-            { return createToken("Nova linha", null, yyline + 1, yycolumn);
-            }
-            // fall through
-          case 12: break;
           case 4:
             { return createToken("Parênteses", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 13: break;
+          case 12: break;
           case 5:
             { return createToken("Operador de soma", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 14: break;
+          case 13: break;
           case 6:
             { return createToken("Número Inteiro", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 15: break;
+          case 14: break;
           case 7:
             { return createToken("Identificador", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 16: break;
+          case 15: break;
           case 8:
-            { return createToken("Palavra reservada if", yytext(), yyline, yycolumn);
+            { return createToken("Palavra reservada", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 17: break;
-          case 9:
-            { return createToken("Palavra reservada then", yytext(), yyline, yycolumn);
-            }
-            // fall through
-          case 18: break;
+          case 16: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
