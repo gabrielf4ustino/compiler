@@ -33,7 +33,11 @@ public class Main {
                         LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
                         LanguageToken token;
                         input = scan.next();
-                        FileOutputStream outputStream = new FileOutputStream(input);
+                        if (!Objects.equals(input, "-o")) {
+                            throw new RuntimeException();
+                        }
+                        input = scan.next();
+                        FileOutputStream outputStream = new FileOutputStream(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
                         while ((token = lexical.yylex()) != null) {
                             String output = ("<" + token.name + ", " + token.value + "> (" + token.line + ":" + token.column + ") \n");
                             outputStream.write(output.getBytes());
@@ -56,6 +60,13 @@ public class Main {
                             scan.nextLine();
                         }
                         input = scan.next();
+                    } catch (RuntimeException e) {
+                        System.out.println("compile: '" + input + "' is not a compile command. See 'compile --help'.");
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
                     }
                 } else if (Objects.equals(input, "-g") || Objects.equals(input, "--generate-analyzer")) {
                     try {
@@ -66,18 +77,9 @@ public class Main {
                             if (System.getProperty("os.name").contains("Windows"))
                                 new ProcessBuilder("cmd", "/c", "mvn install && mvn exec:java").inheritIO().start().waitFor();
                             else {
-                                Process process = Runtime.getRuntime().exec("mvn install");
-                                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                                String line;
-                                while ((line = reader.readLine()) != null) {
-                                    System.out.println(line);
-                                }
-                                process = Runtime.getRuntime().exec("mvn exec:java");
-                                reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                                line = "";
-                                while ((line = reader.readLine()) != null) {
-                                    System.out.println(line);
-                                }
+                                System.out.println("##########################################################\n" +
+                                                   "Recompile o programa para as alterações entrarem em vigor.\n" +
+                                                   "##########################################################");
                             }
                             System.out.print(rootPath + "> ");
                             input = scan.next();
@@ -102,6 +104,34 @@ public class Main {
                 } else {
                     System.out.println("compile: '" + input + "' is not a compile command. See 'compile --help'.");
                     System.out.print(rootPath + "> ");
+                    input = scan.next();
+                }
+            } else if (Objects.equals(input, "cat")) {
+                try {
+                    input = scan.next();
+                    FileReader file = new FileReader(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
+                    BufferedReader fileReader = new BufferedReader(file);
+                    String line = fileReader.readLine();
+                    while (line != null) {
+                        System.out.printf("%s\n", line);
+                        line = fileReader.readLine();
+                    }
+                    file.close();
+                    System.out.print(rootPath + "> ");
+                    input = scan.next();
+                } catch (FileNotFoundException e) {
+                    System.out.println("error: " + e);
+                    System.out.print(rootPath + "> ");
+                    if (scan.hasNext()) {
+                        scan.nextLine();
+                    }
+                    input = scan.next();
+                } catch (IOException e) {
+                    System.out.println("error: " + e);
+                    System.out.print(rootPath + "> ");
+                    if (scan.hasNext()) {
+                        scan.nextLine();
+                    }
                     input = scan.next();
                 }
             } else {

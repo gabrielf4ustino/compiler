@@ -30,11 +30,11 @@ PARENTHESES = ["("|")"]
 
 %%
 
-"if"                          { return createToken("Palavra reservada if", yytext(), yyline, yycolumn); }
-"then"                        { return createToken("Palavra reservada then", yytext(), yyline, yycolumn); }
+"if"                          { return createToken("Palavra reservada", yytext(), yyline, yycolumn); }
+"then"                        { return createToken("Palavra reservada", yytext(), yyline, yycolumn); }
 {PARENTHESES}                 { return createToken("Parênteses", yytext(), yyline, yycolumn); }
-{SPACE}                       { return createToken("Espaço em branco", null, yyline, yycolumn); }
-{NEWLINE}                     { return createToken("Nova linha", null, yyline + 1, yycolumn); }
+{SPACE}                       { return createToken("Espaço em branco", "", yyline, yycolumn); }
+{NEWLINE}                     { return createToken("Nova linha", "", yyline + 1, yycolumn); }
 {ID}                          { return createToken("Identificador", yytext(), yyline, yycolumn); }
 {ARITHMETICOPERATORS}         { return createToken("Operador de soma", yytext(), yyline, yycolumn); }
 {INTEGER}                     { return createToken("Número Inteiro", yytext(), yyline, yycolumn); }

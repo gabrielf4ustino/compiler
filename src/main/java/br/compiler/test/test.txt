@@ -1,2 +1,2 @@
-if ((a > b) | a > 9)
-System.out.println("");;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+if
+then
