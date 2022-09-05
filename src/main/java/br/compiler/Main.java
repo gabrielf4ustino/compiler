@@ -45,7 +45,6 @@ public class Main {
                         while ((token = lexical.yylex()) != null) {
                             String output = ("<" + token.name + ", " + token.value + "> (" + token.line + ":" + token.column + ") \n");
                             outputStream.write(output.getBytes());
-                            System.out.println(lexical.identifiers);
                         }
                         outputStream.close();
                         System.out.println("done.");
