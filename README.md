@@ -1,6 +1,6 @@
 ## Versão Atual
 
-- **v1.1.1**
+- **v1.2.1**
 
 ## Status do Projeto
 
@@ -27,8 +27,10 @@
     - docker build --rm -t compilador:v1.1.1 .
 
 ## Execução
-
-- mvn exec:java
+- Java Local
+    - mvn exec:java
+- Docker 
+    - docker run -i compilador:v1.1.1
 
 ## Comandos
 
