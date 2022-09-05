@@ -1,4 +1,8 @@
 if IF
 then THEN
-
+teste_123
+TESTE
+teste123
+teste 123
 {"integer","boolean","true","false","read","write","return","goto"}
+INTEGER
