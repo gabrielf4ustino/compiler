@@ -37,6 +37,10 @@ public class Main {
                             throw new RuntimeException();
                         }
                         input = scan.next();
+                        File theDir = new File(rootPath + "/src/main/java/br/compiler/result");
+                        if (!theDir.exists()){
+                            theDir.mkdirs();
+                        }
                         FileOutputStream outputStream = new FileOutputStream(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
                         while ((token = lexical.yylex()) != null) {
                             String output = ("<" + token.name + ", " + token.value + "> (" + token.line + ":" + token.column + ") \n");
@@ -47,7 +51,7 @@ public class Main {
                         System.out.print(rootPath + "> ");
                         input = scan.next();
                     } catch (FileNotFoundException e) {
-                        System.out.println("compile: file '" + input + "' not founded.");
+                        System.out.println("compile: file '" + input + "' not found.");
                         System.out.print(rootPath + "> ");
                         if (scan.hasNext()) {
                             scan.nextLine();
