@@ -1,2 +1,4 @@
-if
-then
+if IF
+then THEN
+
+{"integer","boolean","true","false","read","write","return","goto"}
