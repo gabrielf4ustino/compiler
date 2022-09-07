@@ -1,6 +1,6 @@
 ## Versão Atual
 
-- **v1.2.2**
+- **v1.1.1**
 
 ## Status do Projeto
 
