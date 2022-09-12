@@ -1,4 +1,5 @@
 .idea
+idea
 target
 src/main/java/br/compiler/result/*
 src/main/java/br/compiler/test/*

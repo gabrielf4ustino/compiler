@@ -10,16 +10,12 @@ import java.util.stream.Stream;
 
 %{
 
-public Set<String> keyWords = new HashSet<String>();
+public Set<String> keyWords = Stream.of("integer","boolean","true","false","read","write","return","goto","if").collect(Collectors.toSet());
 
 public Set<String> identifiers = new HashSet<String>();
 
 private LanguageToken createToken(String name, String value, Integer line, Integer column) {
-    return new LanguageToken(name, "\"" + value + "\"", line + 1, column + 1);
-}
-
-private void setKeyWords(String keyWord){
-    keyWords.add(keyWord);
+    return new LanguageToken(name, value, line + 1, column + 1);
 }
 
 private void setIdentifiers(String identifier){
@@ -59,9 +55,8 @@ COMMA = [","]
 {OR}                          { return createToken("Alternativa", yytext(), yyline, yycolumn); }
 {SPACE}                       { return createToken("Espaço em branco", " ", yyline, yycolumn); }
 {NEWLINE}                     { return createToken("Nova linha", " ", yyline + 1, yycolumn); }
-{ID}                          { Set<String> keyWords = Stream.of("integer","boolean","true","false","read","write","return","goto","if").collect(Collectors.toSet());
+{ID}                          {
                                 if(keyWords.contains(yytext().toLowerCase())){
-                                    setKeyWords(yytext().toLowerCase());
                                     return createToken("Palavra reservada", yytext(), yyline, yycolumn);
                                 } else if(!identifiers.contains(yytext().toLowerCase())){
                                       setIdentifiers(yytext().toLowerCase());

@@ -284,16 +284,12 @@ public class LexicalAnalyzer {
 
   /* user code: */
 
-public Set<String> keyWords = new HashSet<String>();
+public Set<String> keyWords = Stream.of("integer","boolean","true","false","read","write","return","goto","if").collect(Collectors.toSet());
 
 public Set<String> identifiers = new HashSet<String>();
 
 private LanguageToken createToken(String name, String value, Integer line, Integer column) {
-    return new LanguageToken(name, "\"" + value + "\"", line + 1, column + 1);
-}
-
-private void setKeyWords(String keyWord){
-    keyWords.add(keyWord);
+    return new LanguageToken(name, value, line + 1, column + 1);
 }
 
 private void setIdentifiers(String identifier){
@@ -737,9 +733,7 @@ private void setIdentifiers(String identifier){
             // fall through
           case 19: break;
           case 9:
-            { Set<String> keyWords = Stream.of("integer","boolean","true","false","read","write","return","goto","if").collect(Collectors.toSet());
-                                if(keyWords.contains(yytext().toLowerCase())){
-                                    setKeyWords(yytext().toLowerCase());
+            { if(keyWords.contains(yytext().toLowerCase())){
                                     return createToken("Palavra reservada", yytext(), yyline, yycolumn);
                                 } else if(!identifiers.contains(yytext().toLowerCase())){
                                       setIdentifiers(yytext().toLowerCase());
