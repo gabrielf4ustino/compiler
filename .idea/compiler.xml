@@ -7,8 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="compilador" />
+        <module name="compiler" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="compilador" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>

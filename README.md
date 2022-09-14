@@ -1,6 +1,6 @@
 ## Versão Atual
 
-- **v1.1.1**
+- **v1.2.3**
 
 ## Status do Projeto
 
@@ -24,15 +24,21 @@
 - Docker
     - git clone [url]
     - cd .\compilador\
-    - docker build --rm -t compilador:v1.1.1 .
+    - docker build -t compilador:v1.2.3 .
 
 ## Execução
 - Java Local
-    - mvn exec:java
+  - java -jar .\target\compiler-v1.2.3-shaded.jar
 - Docker 
-    - docker run -i compilador:v1.1.1
+    - docker run -i compilador:v1.2.3
 
 ## Comandos
 
 - compile [-l | --lexical-analysis [fileName] [-o resultFileName]] [-g | --generate-analyzer [fileName]]
 - cat [fileName]
+
+## Atenção 
+- Diretório do arquivo de teste 
+  - src/main/java/br/compiler/test/
+- Formato do arquivo
+  - .txt 
