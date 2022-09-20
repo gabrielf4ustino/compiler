@@ -8,7 +8,7 @@
 
 ## Sobre
 
-- Projeto de um compilador implementado em java.
+- Projeto de um compilador implementado em java com JFlex e JavaCUP.
 
 ## Pré requisitos
 
@@ -36,9 +36,14 @@
 
 - compile [-l | --lexical-analysis [fileName] [-o resultFileName]] [-g | --generate-analyzer [fileName]]
 - cat [fileName]
+- clear
 
-## Atenção 
+# Atenção 
+### Necessário adicionar o arquivo de teste.
 - Diretório do arquivo de teste 
   - src/main/java/br/compiler/test/
-- Formato do arquivo
+- Formato do arquivo de teste
   - .txt 
+### Resultado da análise é gerado em:
+  - src/main/java/br/compiler/result/*.txt
+ 
