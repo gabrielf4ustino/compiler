@@ -37,7 +37,6 @@ public class Main {
                         input = scan.next();
                         String subPath = "/src/main/java/br/compiler/test/";
                         String sourceCode = rootPath + subPath + input + ".txt";
-
                         //start the lexical analyzer with the file passed as parameter
                         LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
                         LanguageToken token;
@@ -46,27 +45,23 @@ public class Main {
                             throw new RuntimeException();
                         }
                         input = scan.next();
-
                         //make the path "result" if it does not exist
                         File theDir = new File(rootPath + "/src/main/java/br/compiler/result");
                         if (!theDir.exists()) {
                             theDir.mkdirs();
                         }
-
                         //making the result file with the name passed as parameter
                         FileOutputStream outputStream = new FileOutputStream(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
-
                         //writing result in file
                         while ((token = lexical.yylex()) != null) {
                             String value;
-                            if (token.value != " ")
+                            if (!Objects.equals(token.value, " "))
                                 value = ", " + "\"" + token.value + "\"";
                             else
                                 value = "";
                             String output = ("<" + token.line + ":" + token.column + " " + token.name + value + ">\n");
                             outputStream.write(output.getBytes());
                         }
-
                         outputStream.close();
                         System.out.println("done.");
                         System.out.print(rootPath + "> ");
@@ -79,7 +74,7 @@ public class Main {
                         }
                         input = scan.next();
                     } catch (IOException e) {
-                        System.out.println("error: " + e);
+                        System.out.println("error: " + e.getMessage());
                         System.out.print(rootPath + "> ");
                         if (scan.hasNext()) {
                             scan.nextLine();
@@ -102,7 +97,7 @@ public class Main {
                         if (Generate(input)) {
                             if (System.getProperty("os.name").contains("Windows"))
                                 //rerun the program with the new lexical analyzer (in windows)
-                                new ProcessBuilder("cmd", "/c", "mvn install &&  java -jar ./target/compiler-v1.1.1-shaded.jar").inheritIO().start().waitFor();
+                                new ProcessBuilder("cmd", "/c", "mvn install &&  java -jar ./target/compiler-v1.2.3-shaded.jar").inheritIO().start().waitFor();
                             else {
                                 System.out.println("##########################################################\n" +
                                         "Recompile o programa para as alterações entrarem em vigor.\n" +
@@ -113,15 +108,15 @@ public class Main {
                         } else {
                             throw new FileNotFoundException();
                         }
-                    } catch (IOException e) {
-                        System.out.println("error: " + e);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("compile: file '" + input + "' not found.");
                         System.out.print(rootPath + "> ");
                         if (scan.hasNext()) {
                             scan.nextLine();
                         }
                         input = scan.next();
-                    } catch (InterruptedException e) {
-                        System.out.println("error: " + e);
+                    } catch (IOException | InterruptedException e) {
+                        System.out.println("error: " + e.getMessage());
                         System.out.print(rootPath + "> ");
                         if (scan.hasNext()) {
                             scan.nextLine();
@@ -152,15 +147,8 @@ public class Main {
                     file.close();
                     System.out.print(rootPath + "> ");
                     input = scan.next();
-                } catch (FileNotFoundException e) {
-                    System.out.println("error: " + e);
-                    System.out.print(rootPath + "> ");
-                    if (scan.hasNext()) {
-                        scan.nextLine();
-                    }
-                    input = scan.next();
                 } catch (IOException e) {
-                    System.out.println("error: " + e);
+                    System.out.println("error: " + e.getMessage());
                     System.out.print(rootPath + "> ");
                     if (scan.hasNext()) {
                         scan.nextLine();
@@ -187,8 +175,7 @@ public class Main {
                     System.out.println(line);
                 }
             }
-        } catch (InterruptedException e) {
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException ignored) {
         }
     }
 }

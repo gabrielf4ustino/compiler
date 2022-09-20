@@ -10,13 +10,9 @@ public class LexicalAnalyzerGenerator {
         try {
             String rootPath = Paths.get("").toAbsolutePath().toString();
             String subPath = "/src/main/java/br/compiler/lexicalanalyzer/";
-
-            String file = rootPath + subPath + lexeme + ".lex";
-
-            jflex.Main.main(new String[]{file});
+            jflex.Main.generate(new String[]{rootPath + subPath + lexeme + ".lex"});
             return true;
-        } catch (GeneratorException e) {
-            System.out.println(e);
+        } catch (GeneratorException | SilentExit e) {
             return false;
         }
     }
