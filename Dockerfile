@@ -5,4 +5,4 @@ RUN mvn install
 FROM openjdk:18
 WORKDIR /compiler
 COPY --from=build ./ ./
-CMD java -jar /compiler/target/compiler-v1.2.2.jar
+CMD java -jar /compiler/target/compiler-v1.2.3-shaded.jar
