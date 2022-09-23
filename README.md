@@ -37,6 +37,7 @@
 - compile [-l | --lexical-analysis [fileName] [-o resultFileName]] [-g | --generate-analyzer [fileName]]
 - cat [fileName]
 - clear
+- quit
 
 # Atenção 
 ### Necessário adicionar o arquivo de teste.
