@@ -40,10 +40,12 @@
 
 # Atenção 
 ### Necessário adicionar o arquivo de teste.
-- Diretório do arquivo de teste 
-  - src/main/java/br/compiler/test/
 - Formato do arquivo de teste
   - .txt 
+- Formato do arquivo de lexema
+  - .flex
+- Formato do arquivo de gramatica
+  - .cup
 ### Resultado da análise é gerado em:
   - src/main/java/br/compiler/result/*.txt
  

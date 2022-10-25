@@ -1,3 +1,39 @@
-import java_cup.runtime.*;
+package br.compiler.syntacticanalyzer;
 
-terminal EOF, EXCLAMATIONMARK, ASSIGNMENTOPERATOR, COLON, EMPTYSTATEMENT, RELATIONALOPERATOR, INTEGER, MULTIPLICATIVEOPERATOR, ADDITIVEOPERATOR, IDENTIFIER, KEYWORD, COMMA, QUOTATIONMARKS, BRACKETR, BRACKETL, CURLYBRACESR, CURLYBRACESL, PARENTHESESR, PARENTHESESL, ALTERNATIVE;
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+parser code {:
+    // conectar esse parser ao scanner!
+    Scanner s;
+    Parser(Scanner s){ this.s=s; }
+
+    // tabela de símbolos
+    java.util.Map<String, Integer> simbolos = new java.util.HashMap<String, Integer>();
+:}
+
+init with {:  :};
+scan with {: return s.next_token(); :};
+
+terminal EXCLAMATIONMARK, ASSIGNMENTOPERATOR, COLON, EMPTYSTATEMENT, RELATIONALOPERATOR, INTEGER, MULTIPLICATIVEOPERATOR, ADDITIVEOPERATOR, IDENTIFIER, KEYWORD, COMMA, QUOTATIONMARKS, BRACKETR, BRACKETL, CURLYBRACESR, CURLYBRACESL, PARENTHESESR, PARENTHESESL, ALTERNATIVE;
+
+nonterminal program, function, functions, formalParameters, block, labels, variables, body, identifierList, type;
+
+program ::= function;
+
+function ::= IDENTIFIER IDENTIFIER formalParameters block | KEYWORD IDENTIFIER formalParameters block;
+
+block ::= labels variables functions body;
+
+labels ::= KEYWORD identifierList EMPTYSTATEMENT;
+
+variables ::= variables | KEYWORD CURLYBRACESL identifierList ASSIGNMENTOPERATOR type EMPTYSTATEMENT CURLYBRACESR;
+
+identifierList ::= KEYWORD;
+
+variables ::= KEYWORD;
+
+type ::= KEYWORD;
+formalParameters ::= KEYWORD;
+body ::= KEYWORD;

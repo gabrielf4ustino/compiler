@@ -1024,7 +1024,7 @@ private void setIdentifiers(String identifier){
             // fall through
           case 33: break;
           case 14:
-            { return new Symbol(Sym.RELATIONALOPERATOR,  new Token("Operador relacional", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.RELATIONALOPERATOR, yytext("Operador relacional", yytext(), yyline, yycolumn));
             }
             // fall through
           case 34: break;

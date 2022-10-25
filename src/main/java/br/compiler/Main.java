@@ -1,7 +1,9 @@
 package br.compiler;
 
-import br.compiler.language.LanguageToken;
+import br.compiler.language.Token;
 import br.compiler.lexicalanalyzer.LexicalAnalyzer;
+import br.compiler.syntacticanalyzer.Sym;
+import java_cup.runtime.Symbol;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -26,18 +28,18 @@ public class Main {
             if (Objects.equals(input, "compile")) {
                 input = scan.next();
                 if (Objects.equals(input, "--help")) {
-                    System.out.println("commands: compile | cat | quit | cls | clear\n" +
-                            "usage: compile [-l | --lexical-analysis [<file>] [-o <name>]] [-g | --generate-analyzer [<file>]]\n" +
-                            "       cat [<file>]" +
-                            "       cls | clear");
+                    System.out.println("""
+                            commands: compile | cat | quit | cls | clear
+                            usage: compile [-l | --lexical-analysis [<file>] [-o <name>]] [-g | --generate-analyzer [<file>]]
+                                   cat [<file>]       cls | clear""");
                     System.out.print(rootPath + "> ");
                     input = scan.next();
                 } else if (Objects.equals(input, "-l") || Objects.equals(input, "--lexical-analysis")) {
                     try {
                         input = scan.next();
-                        //start the lexical analyzer with the file passed as parameter
-                        LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(input));
-                        String token;
+                        //start the scanner analyzer with the file passed as parameter
+                        LexicalAnalyzer scanner = new LexicalAnalyzer(new FileReader(input));
+                        Symbol token = scanner.next_token();
                         input = scan.next();
                         if (!Objects.equals(input, "-o")) {
                             throw new RuntimeException();
@@ -51,14 +53,16 @@ public class Main {
                         //making the result file with the name passed as parameter
                         FileOutputStream outputStream = new FileOutputStream(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
                         //writing result in file
-                        while ((token = lexical.yytext()) != null) {
+                        while (token.sym != Sym.EOF) {
+                            Token tokenObj = (Token) token.value;
                             String value;
-                            if (!Objects.equals(token, " "))
-                                value = ", " + "\"" + token + "\"";
+                            if (!Objects.equals(tokenObj.value, " "))
+                                value = ", " + "\"" + tokenObj.value + "\"";
                             else
                                 value = "";
-                            String output = ("<" /*+ token.line + ":" + token.column + " " + lexical.yytext()*/ + value + ">\n");
+                            String output = ("<" + tokenObj.line + ":" + tokenObj.column + " " + tokenObj.name + value + ">\n");
                             outputStream.write(output.getBytes());
+                            token = scanner.next_token();
                         }
                         outputStream.close();
                         System.out.println("done.");
@@ -97,9 +101,10 @@ public class Main {
                                 //rerun the program with the new lexical analyzer (in windows)
                                 new ProcessBuilder("cmd", "/c", "mvn install &&  java -jar ./target/compiler-v1.2.3-shaded.jar").inheritIO().start().waitFor();
                             else {
-                                System.out.println("##########################################################\n" +
-                                        "Recompile o programa para as alterações entrarem em vigor.\n" +
-                                        "##########################################################");
+                                System.out.println("""
+                                        ##########################################################
+                                        Recompile o programa para as alterações entrarem em vigor.
+                                        ##########################################################""");
                             }
                             System.out.print(rootPath + "> ");
                             input = scan.next();
