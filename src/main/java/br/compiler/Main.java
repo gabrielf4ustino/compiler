@@ -35,10 +35,8 @@ public class Main {
                 } else if (Objects.equals(input, "-l") || Objects.equals(input, "--lexical-analysis")) {
                     try {
                         input = scan.next();
-                        String subPath = "/src/main/java/br/compiler/test/";
-                        String sourceCode = rootPath + subPath + input + ".txt";
                         //start the lexical analyzer with the file passed as parameter
-                        LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
+                        LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(input));
                         LanguageToken token;
                         input = scan.next();
                         if (!Objects.equals(input, "-o")) {

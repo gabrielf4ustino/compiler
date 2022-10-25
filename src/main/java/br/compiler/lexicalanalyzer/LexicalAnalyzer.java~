@@ -340,10 +340,10 @@ public class LexicalAnalyzer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\1\1\4\1\5\1\1"+
-    "\1\6\1\7\1\10\1\11\1\7\2\12\1\13\1\14"+
-    "\1\15\1\16\1\17\1\20\1\21\1\15\1\0\1\22"+
-    "\2\0\2\22\1\0\1\22";
+    "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\1\1"+
+    "\1\7\1\10\1\11\1\12\1\10\2\13\1\14\1\15"+
+    "\1\16\1\17\1\20\1\21\1\22\1\16\1\0\1\23"+
+    "\2\0\2\23\1\0\1\23";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[31];
@@ -948,23 +948,28 @@ private void setIdentifiers(String identifier){
             { return createToken("Caractere inválido", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 19: break;
+          case 20: break;
           case 2:
             { return createToken("Espaço em branco", " ", yyline, yycolumn);
             }
             // fall through
-          case 20: break;
+          case 21: break;
           case 3:
             { return createToken("Nova linha", " ", yyline + 1, yycolumn);
             }
             // fall through
-          case 21: break;
+          case 22: break;
           case 4:
+            { return createToken("Ponto de exclamação", yytext(), yyline, yycolumn);
+            }
+            // fall through
+          case 23: break;
+          case 5:
             { return createToken("Aspas", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 22: break;
-          case 5:
+          case 24: break;
+          case 6:
             { if(keyWords.contains(yytext().toLowerCase())){
                                     return createToken("Palavra reservada", yytext(), yyline, yycolumn);
                                 } else if(!identifiers.contains(yytext().toLowerCase())){
@@ -973,72 +978,72 @@ private void setIdentifiers(String identifier){
                                 }
             }
             // fall through
-          case 23: break;
-          case 6:
+          case 25: break;
+          case 7:
             { return createToken("Parênteses", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 24: break;
-          case 7:
+          case 26: break;
+          case 8:
             { return createToken("Operador aditivo", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 25: break;
-          case 8:
+          case 27: break;
+          case 9:
             { return createToken("Operador múltiplicativo", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 26: break;
-          case 9:
+          case 28: break;
+          case 10:
             { return createToken("Vírgula", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 27: break;
-          case 10:
+          case 29: break;
+          case 11:
             { return createToken("Número Inteiro", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 28: break;
-          case 11:
+          case 30: break;
+          case 12:
             { return createToken("Dois pontos", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 29: break;
-          case 12:
+          case 31: break;
+          case 13:
             { return createToken("Declaração vazia", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 30: break;
-          case 13:
+          case 32: break;
+          case 14:
             { return createToken("Operador relacional", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 31: break;
-          case 14:
+          case 33: break;
+          case 15:
             { return createToken("Operador de atribuição", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 32: break;
-          case 15:
+          case 34: break;
+          case 16:
             { return createToken("Colchetes", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 33: break;
-          case 16:
+          case 35: break;
+          case 17:
             { return createToken("Chaves", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 34: break;
-          case 17:
+          case 36: break;
+          case 18:
             { return createToken("Alternativa", yytext(), yyline, yycolumn);
             }
             // fall through
-          case 35: break;
-          case 18:
+          case 37: break;
+          case 19:
             { /* ignore */
             }
             // fall through
-          case 36: break;
+          case 38: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
