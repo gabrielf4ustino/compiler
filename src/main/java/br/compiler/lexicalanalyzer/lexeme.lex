@@ -27,7 +27,7 @@ private void setIdentifiers(String identifier){
 
 %public
 %class LexicalAnalyzer
-%type java_cup.runtime.Symbol
+%type Symbol
 %unicode
 %line
 %column
@@ -41,9 +41,12 @@ Identifier = [:jletter:] [:jletterdigit:]*
 MultiplicativeOperator = "/" | "*" | "&&"
 AdditiveOperator = "+" | "-" | "||"
 Integer = 0|[1-9][0-9]*
-Parentheses = "("|")"
-CurlyBraces = "{"|"}"
-Bracket = "[" | "]"
+ParenthesesL = "("
+ParenthesesR = ")"
+CurlyBracesL = "{"
+CurlyBracesR = "}"
+BracketL = "["
+BracketR = "]"
 Alternative = "|"
 QuotationMarks = "\""
 Comma = ","
@@ -65,32 +68,89 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 
 %%
 
-{Alternative}                 { createToken("Alternativa", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{Parentheses}                 { createToken("Parênteses", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{CurlyBraces}                 { createToken("Chaves", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{QuotationMarks}              { createToken("Aspas", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{Comma}                       { createToken("Vírgula", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{Bracket}                     { createToken("Colchetes", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{Space}                       { createToken("Espaço em branco", " ", yyline, yycolumn); return new Symbol(sym);}
-{NewLine}                     { createToken("Nova linha", " ", yyline + 1, yycolumn); return new Symbol(sym);}
+{Alternative}                 {
+                                createToken("Alternativa", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.ALTERNATIVE);
+                              }
+{ParenthesesL}                {
+                                createToken("Abre parênteses", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.PARENTHESESL);
+                              }
+{ParenthesesR}                {
+                                createToken("fecha parênteses", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.PARENTHESESR);
+                              }
+{CurlyBracesL}                {
+                                createToken("Abre chaves", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.CURLYBRACESL);
+                              }
+{CurlyBracesR}                {
+                                createToken("Fecha chaves", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.CURLYBRACESR);
+                              }
+{BracketL}                    {
+                                createToken("Abre colchetes", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.BRACKETL);
+                              }
+{BracketR}                    {
+                                createToken("Fecha colchetes", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.BRACKETR);
+                              }
+{QuotationMarks}              {
+                                createToken("Aspas", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.QUOTATIONMARKS);
+                              }
+{Comma}                       {
+                                createToken("Vírgula", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.COMMA);
+                              }
+{Space}                       { /* ignore */ }
+{NewLine}                     { /* ignore */ }
 {Identifier}                  {
                                 if(keyWords.contains(yytext().toLowerCase())){
                                     createToken("Palavra reservada", yytext(), yyline, yycolumn);
-                                    return new Symbol(sym);
+                                    return new Symbol(sym.KEYWORD);
                                 } else if(!identifiers.contains(yytext().toLowerCase())){
                                       setIdentifiers(yytext().toLowerCase());
                                       createToken("Identificador", yytext(), yyline, yycolumn);
-                                      return new Symbol(sym);
+                                      return new Symbol(sym.IDENTIFIER);
                                 }
                               }
-{AdditiveOperator}            { createToken("Operador múltiplicativo", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{MultiplicativeOperator}      { createToken("Operador aditivo", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{Integer}                     { createToken("Número Inteiro", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{RelationalOperator}          { createToken("Operador relacional", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{EmptyStatement}              { createToken("Declaração vazia", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{Colon}                       { createToken("Dois pontos", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{AssignmentOperator}          { createToken("Operador de atribuição", yytext(), yyline, yycolumn); return new Symbol(sym);}
-{ExclamationMark}             { createToken("Ponto de exclamação", yytext(), yyline, yycolumn); return new Symbol(sym);}
+{AdditiveOperator}            {
+                                createToken("Operador múltiplicativo", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.ADDITIVEOPERATOR);
+                              }
+{MultiplicativeOperator}      {
+                                createToken("Operador aditivo", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.MULTIPLICATIVEOPERATOR);
+                              }
+{Integer}                     {
+                                createToken("Número Inteiro", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.INTEGER);
+                              }
+{RelationalOperator}          {
+                                createToken("Operador relacional", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.RELATIONALOPERATOR);
+                              }
+{EmptyStatement}              {
+                                createToken("Declaração vazia", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.EMPTYSTATEMENT);
+                              }
+{Colon}                       {
+                                createToken("Dois pontos", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.COLON);
+                              }
+{AssignmentOperator}          {
+                                createToken("Operador de atribuição", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.ASSIGNMENTOPERATOR);
+                              }
+{ExclamationMark}             {
+                                createToken("Ponto de exclamação", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.EXCLAMATIONMARK);
+                              }
 {Comment}                     { /* ignore */ }
 
-. { createToken("Caractere inválido", yytext(), yyline, yycolumn); return new Symbol(sym);}
+.                             {
+                                createToken("Caractere inválido", yytext(), yyline, yycolumn);
+                                return new Symbol(sym.EOF);
+                              }

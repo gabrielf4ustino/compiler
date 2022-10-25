@@ -37,7 +37,7 @@ public class Main {
                         input = scan.next();
                         //start the lexical analyzer with the file passed as parameter
                         LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(input));
-                        LanguageToken token;
+                        String token;
                         input = scan.next();
                         if (!Objects.equals(input, "-o")) {
                             throw new RuntimeException();
@@ -51,13 +51,13 @@ public class Main {
                         //making the result file with the name passed as parameter
                         FileOutputStream outputStream = new FileOutputStream(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
                         //writing result in file
-                        while ((token = lexical.yylex()) != null) {
+                        while ((token = lexical.yytext()) != null) {
                             String value;
-                            if (!Objects.equals(token.value, " "))
-                                value = ", " + "\"" + token.value + "\"";
+                            if (!Objects.equals(token, " "))
+                                value = ", " + "\"" + token + "\"";
                             else
                                 value = "";
-                            String output = ("<" + token.line + ":" + token.column + " " + token.name + value + ">\n");
+                            String output = ("<" /*+ token.line + ":" + token.column + " " + lexical.yytext()*/ + value + ">\n");
                             outputStream.write(output.getBytes());
                         }
                         outputStream.close();
