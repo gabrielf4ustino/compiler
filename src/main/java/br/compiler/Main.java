@@ -2,8 +2,10 @@ package br.compiler;
 
 import br.compiler.language.Token;
 import br.compiler.lexicalanalyzer.LexicalAnalyzer;
+import br.compiler.syntacticanalyzer.Parser;
 import br.compiler.syntacticanalyzer.Sym;
 import java_cup.runtime.Symbol;
+import org.apache.tools.ant.types.resources.Tokens;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -30,11 +32,14 @@ public class Main {
                 if (Objects.equals(input, "--help")) {
                     System.out.println("""
                             commands: compile | cat | quit | cls | clear
-                            usage: compile [-l | --lexical-analysis [<file>] [-o <name>]] [-g | --generate-analyzer [<file>]]
+                            usage: compile [-l  | --lexical-analysis [<file>] [-o <name>]] 
+                                           [-s  | --syntactic-analysis [<file>]]
+                                           [-gl | --generate-lexical-analysis [<file>]]
+                                           [-gs | --generate-syntactic-analysis [<file>]]
                                    cat [<file>]       cls | clear""");
                     System.out.print(rootPath + "> ");
                     input = scan.next();
-                } else if (Objects.equals(input, "-l") || Objects.equals(input, "--lexical-analysis")) {
+                } else if ((Objects.equals(input, "-l") || Objects.equals(input, "--lexical-analysis"))) {
                     try {
                         input = scan.next();
                         //start the scanner analyzer with the file passed as parameter
@@ -90,7 +95,46 @@ public class Main {
                         }
                         input = scan.next();
                     }
-                } else if (Objects.equals(input, "-g") || Objects.equals(input, "--generate-analyzer")) {
+                } else if ((Objects.equals(input, "-s") || Objects.equals(input, "--syntactic-analysis"))) {
+                    try {
+                        input = scan.next();
+                        //start the parse analyzer with the file passed as parameter
+                        Parser parser = new Parser(new LexicalAnalyzer(new FileReader(input)));
+                        parser.parse();
+                        System.out.println("done.");
+                        System.out.print(rootPath + "> ");
+                        input = scan.next();
+                    }catch (FileNotFoundException e) {
+                        System.out.println("compile: file '" + input + "' not found.");
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
+                    } catch (IOException e) {
+                        System.out.println("error: " + e.getMessage());
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
+                    } catch (RuntimeException e) {
+                        System.out.println(e);
+                        System.out.println("compile: '" + input + "' is not a compile command. See 'compile --help'.");
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
+                    }
+                } else if (Objects.equals(input, "-gl") || Objects.equals(input, "--generate-lexical-analysis")) {
                     try {
                         input = scan.next();
                         clearTerminal();
