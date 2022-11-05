@@ -1,19 +1,14 @@
 package br.compiler.lexicalanalyzer;
 
-import br.compiler.language.Token;import br.compiler.syntacticanalyzer.Sym;
+import br.compiler.language.Token;
+import br.compiler.syntacticanalyzer.Sym;
 import java_cup.runtime.Symbol;
-import jflex.core.sym;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 %%
 
 %{
-
-public Set<String> keyWords = Stream.of("integer", "boolean", "true", "false", "read", "write", "return", "goto", "void", "var", "var", "type", "function", "functions", "label", "if", "while").collect(Collectors.toSet());
-
 public Set<String> identifiers = new HashSet<String>();
 
 private void setIdentifiers(String identifier){
@@ -55,6 +50,7 @@ Colon = ":"
 AssignmentOperator = "="
 ExclamationMark = "!"
 If = "if"
+Else = "else"
 While = "while"
 Functions = "functions"
 Vars = "vars"
@@ -98,6 +94,7 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 {AssignmentOperator}          { return new Symbol(Sym.ASSIGNMENTOPERATOR, new Token("Operador de atribuição", yytext(), yyline + 1, yycolumn));}
 {ExclamationMark}             { return new Symbol(Sym.EXCLAMATIONMARK, new Token("Ponto de exclamação", yytext(), yyline + 1, yycolumn));}
 {If}                          { return new Symbol(Sym.IF, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
+{If}                          { return new Symbol(Sym.ELSE, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
 {While}                       { return new Symbol(Sym.WHILE, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
 {Functions}                   { return new Symbol(Sym.FUNCTIONS, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
 {Vars}                        { return new Symbol(Sym.VARS, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
@@ -107,11 +104,8 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 {Goto}                        { return new Symbol(Sym.GOTO, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
 {Return}                      { return new Symbol(Sym.RETURN, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));}
 {Identifier}                  {
-                                if(keyWords.contains(yytext().toLowerCase())){
-                                    return new Symbol(Sym.KEYWORD, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
-                                } else if(!identifiers.contains(yytext().toLowerCase())){
                                     setIdentifiers(yytext().toLowerCase());
-                                    return new Symbol(Sym.IDENTIFIER, new Token("Identificador", yytext(), yyline + 1, yycolumn));  }
+                                    return new Symbol(Sym.IDENTIFIER, new Token("Identificador", yytext(), yyline + 1, yycolumn));
                               }
 {Comment}                     { /* ignore */ }
 

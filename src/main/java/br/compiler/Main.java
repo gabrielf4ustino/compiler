@@ -5,7 +5,6 @@ import br.compiler.lexicalanalyzer.LexicalAnalyzer;
 import br.compiler.syntacticanalyzer.Parser;
 import br.compiler.syntacticanalyzer.Sym;
 import java_cup.runtime.Symbol;
-import org.apache.tools.ant.types.resources.Tokens;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -101,7 +100,7 @@ public class Main {
                         //start the parse analyzer with the file passed as parameter
                         Parser parser = new Parser(new LexicalAnalyzer(new FileReader(input)));
                         parser.parse();
-                        System.out.println("done.");
+                        System.out.println("Syntactically correct program.");
                         System.out.print(rootPath + "> ");
                         input = scan.next();
                     }catch (FileNotFoundException e) {

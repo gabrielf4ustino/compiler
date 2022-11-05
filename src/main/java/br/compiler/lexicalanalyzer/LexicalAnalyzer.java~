@@ -4,14 +4,12 @@
 
 package br.compiler.lexicalanalyzer;
 
-import br.compiler.language.Token;import br.compiler.syntacticanalyzer.Sym;
+import br.compiler.language.Token;
+import br.compiler.syntacticanalyzer.Sym;
 import java_cup.runtime.Symbol;
-import jflex.core.sym;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -593,9 +591,6 @@ public class LexicalAnalyzer implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-
-public Set<String> keyWords = Stream.of("integer", "boolean", "true", "false", "read", "write", "return", "goto", "void", "var", "var", "type", "function", "functions", "label", "if", "while").collect(Collectors.toSet());
-
 public Set<String> identifiers = new HashSet<String>();
 
 private void setIdentifiers(String identifier){
@@ -1005,7 +1000,7 @@ private void setIdentifiers(String identifier){
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
             zzDoEOF();
-          {     return new Symbol(Sym.EOF, new Token("Fim do arquivo", yytext(), yyline, yycolumn));
+          {     return new Symbol(Sym.EOF, new Token("Fim do arquivo", yytext(), yyline + 1, yycolumn));
  }
       }
       else {
@@ -1021,141 +1016,138 @@ private void setIdentifiers(String identifier){
             // fall through
           case 31: break;
           case 3:
-            { return new Symbol(Sym.EXCLAMATIONMARK, new Token("Ponto de exclamação", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.EXCLAMATIONMARK, new Token("Ponto de exclamação", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 32: break;
           case 4:
-            { return new Symbol(Sym.QUOTATIONMARKS, new Token("Aspas", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.QUOTATIONMARKS, new Token("Aspas", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 33: break;
           case 5:
-            { if(keyWords.contains(yytext().toLowerCase())){
-                                    return new Symbol(Sym.KEYWORD, new Token("Palavra reservada", yytext(), yyline, yycolumn));
-                                } else if(!identifiers.contains(yytext().toLowerCase())){
-                                    setIdentifiers(yytext().toLowerCase());
-                                    return new Symbol(Sym.IDENTIFIER, new Token("Identificador", yytext(), yyline, yycolumn));  }
+            { setIdentifiers(yytext().toLowerCase());
+                                    return new Symbol(Sym.IDENTIFIER, new Token("Identificador", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 34: break;
           case 6:
-            { return new Symbol(Sym.PARENTHESESL, new Token("Abre parênteses", " ", yyline, yycolumn));
+            { return new Symbol(Sym.PARENTHESESL, new Token("Abre parênteses", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 35: break;
           case 7:
-            { return new Symbol(Sym.PARENTHESESR, new Token("Fecha parênteses", " ", yyline, yycolumn));
+            { return new Symbol(Sym.PARENTHESESR, new Token("Fecha parênteses", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 36: break;
           case 8:
-            { return new Symbol(Sym.MULTIPLICATIVEOPERATOR, new Token("Operador aditivo", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.MULTIPLICATIVEOPERATOR, new Token("Operador aditivo", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 37: break;
           case 9:
-            { return new Symbol(Sym.ADDITIVEOPERATOR, new Token("Operador múltiplicativo", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.ADDITIVEOPERATOR, new Token("Operador múltiplicativo", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 38: break;
           case 10:
-            { return new Symbol(Sym.COMMA, new Token("Vírgula", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.COMMA, new Token("Vírgula", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 39: break;
           case 11:
-            { return new Symbol(Sym.INTEGER, new Token("Número Inteiro", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.INTEGER, new Token("Número Inteiro", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 40: break;
           case 12:
-            { return new Symbol(Sym.COLON, new Token("Dois pontos", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.COLON, new Token("Dois pontos", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 41: break;
           case 13:
-            { return new Symbol(Sym.EMPTYSTATEMENT, new Token("Declaração vazia", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.EMPTYSTATEMENT, new Token("Declaração vazia", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 42: break;
           case 14:
-            { return new Symbol(Sym.RELATIONALOPERATOR,  new Token("Operador relacional", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.RELATIONALOPERATOR,  new Token("Operador relacional", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 43: break;
           case 15:
-            { return new Symbol(Sym.ASSIGNMENTOPERATOR, new Token("Operador de atribuição", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.ASSIGNMENTOPERATOR, new Token("Operador de atribuição", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 44: break;
           case 16:
-            { return new Symbol(Sym.BRACKETL, new Token("Abre Colchetes", " ", yyline, yycolumn));
+            { return new Symbol(Sym.BRACKETL, new Token("Abre Colchetes", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 45: break;
           case 17:
-            { return new Symbol(Sym.BRACKETR, new Token("Fecha Colchetes", " ", yyline, yycolumn));
+            { return new Symbol(Sym.BRACKETR, new Token("Fecha Colchetes", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 46: break;
           case 18:
-            { return new Symbol(Sym.CURLYBRACESL, new Token("Abre chaves", " ", yyline, yycolumn));
+            { return new Symbol(Sym.CURLYBRACESL, new Token("Abre chaves", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 47: break;
           case 19:
-            { return new Symbol(Sym.ALTERNATIVE, new Token("Alternativa", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.ALTERNATIVE, new Token("Alternativa", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 48: break;
           case 20:
-            { return new Symbol(Sym.CURLYBRACESR, new Token("Fecha chaves", " ", yyline, yycolumn));
+            { return new Symbol(Sym.CURLYBRACESR, new Token("Fecha chaves", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 49: break;
           case 21:
-            { return new Symbol(Sym.IF, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.IF, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 50: break;
           case 22:
-            { return new Symbol(Sym.VAR, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.VAR, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 51: break;
           case 23:
-            { return new Symbol(Sym.GOTO, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.GOTO, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 52: break;
           case 24:
-            { return new Symbol(Sym.VARS, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.VARS, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 53: break;
           case 25:
-            { return new Symbol(Sym.VOID, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.VOID, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 54: break;
           case 26:
-            { return new Symbol(Sym.WHILE, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.WHILE, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 55: break;
           case 27:
-            { return new Symbol(Sym.LABELS, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.LABELS, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 56: break;
           case 28:
-            { return new Symbol(Sym.RETURN, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.RETURN, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 57: break;
           case 29:
-            { return new Symbol(Sym.FUNCTIONS, new Token("Palavra reservada", yytext(), yyline, yycolumn));
+            { return new Symbol(Sym.FUNCTIONS, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 58: break;

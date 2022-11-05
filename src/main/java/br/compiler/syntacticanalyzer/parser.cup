@@ -7,40 +7,46 @@ import java.io.*;
 parser code {:
 
     public void report_error(String message, Object info)  {
-        System.out.println("Warning - " + message);
+        System.out.println("Warning - " + message + " " + info);
     }
 
     public void report_fatal_error(String message, Object info)  {
-        System.out.println("Error - " + message);
-        System.exit(-1);
+        System.out.println("Error - " + message + " " + info);
+        //System.exit(-1);
     }
 
 :};
 
-terminal EXCLAMATIONMARK, ASSIGNMENTOPERATOR, COLON, EMPTYSTATEMENT, RELATIONALOPERATOR, INTEGER, MULTIPLICATIVEOPERATOR, ADDITIVEOPERATOR, IDENTIFIER, KEYWORD, COMMA,
-         CURLYBRACESR, CURLYBRACESL, PARENTHESESR, PARENTHESESL, IF, WHILE, FUNCTIONS, VARS, LABELS, VAR, VOID, GOTO, RETURN, BRACKETL, BRACKETR, QUOTATIONMARKS, ALTERNATIVE;
+init with {:
+    System.out.println("Starting syntactic analysis...");
+:};
+
+terminal EXCLAMATIONMARK, ASSIGNMENTOPERATOR, COLON, EMPTYSTATEMENT, RELATIONALOPERATOR, INTEGER, MULTIPLICATIVEOPERATOR, ADDITIVEOPERATOR, IDENTIFIER, COMMA,
+         CURLYBRACESR, CURLYBRACESL, PARENTHESESR, PARENTHESESL, IF, ELSE, WHILE, FUNCTIONS, VARS, LABELS, VAR, VOID, GOTO, RETURN, BRACKETL, BRACKETR, QUOTATIONMARKS, ALTERNATIVE;
 
 non terminal program, function, block, block_aux_1, block_aux_2, block_aux_3, labels, variables, id_list_type_aux, functions, function_aux, body, statement_aux, type,
             formal_parameters, fp_aux, formal_parameter, expression_parameter, statement, unlabeled_statement, assignment, function_call_statement, goto, return,
             compound, unlabeled_statement_aux, conditional, repetitive, expression, simple_expression, add_op_term_aux, term, mul_op_factor_aux, factor, function_call,
-            identifier_list, id_aux, expression_list, expression_aux;
+            identifier_list, id_aux, expression_list, expression_aux, empty;
+
+start with program;
 
 program ::= function;
-function ::= IDENTIFIER  IDENTIFIER formal_parameters block | VOID IDENTIFIER formal_parameters block;
+function ::= IDENTIFIER IDENTIFIER formal_parameters block | VOID IDENTIFIER formal_parameters block;
 block ::= block_aux_1 block_aux_2 block_aux_3 body;
-block_aux_1 ::= labels | ;
-block_aux_2 ::= variables | ;
-block_aux_3 ::= functions | ;
+block_aux_1 ::= labels | empty;
+block_aux_2 ::= variables | empty;
+block_aux_3 ::= functions | empty;
 labels ::= LABELS identifier_list EMPTYSTATEMENT;
 variables ::= VARS id_list_type_aux;
 id_list_type_aux ::= identifier_list COLON type EMPTYSTATEMENT id_list_type_aux | identifier_list COLON type EMPTYSTATEMENT;
 functions ::= FUNCTIONS function_aux;
 function_aux ::= function function_aux | function;
 body ::= CURLYBRACESL statement_aux CURLYBRACESR;
-statement_aux ::= statement statement_aux | ;
+statement_aux ::= statement statement_aux | empty;
 type ::= IDENTIFIER;
 formal_parameters ::= PARENTHESESL formal_parameter fp_aux PARENTHESESR | PARENTHESESL PARENTHESESR;
-fp_aux ::= EMPTYSTATEMENT formal_parameter fp_aux | ;
+fp_aux ::= EMPTYSTATEMENT formal_parameter fp_aux | empty;
 formal_parameter ::= expression_parameter;
 expression_parameter ::= VAR identifier_list COLON IDENTIFIER | identifier_list COLON IDENTIFIER;
 statement ::= IDENTIFIER COLON unlabeled_statement | unlabeled_statement | compound;
@@ -48,19 +54,20 @@ unlabeled_statement ::= assignment | function_call_statement | goto | return | c
 assignment ::= IDENTIFIER ASSIGNMENTOPERATOR expression EMPTYSTATEMENT;
 function_call_statement ::= function_call EMPTYSTATEMENT;
 goto ::= GOTO IDENTIFIER EMPTYSTATEMENT;
-return ::= RETURN expression EMPTYSTATEMENT | KEYWORD EMPTYSTATEMENT;
+return ::= RETURN expression EMPTYSTATEMENT | RETURN EMPTYSTATEMENT;
 compound ::= CURLYBRACESL unlabeled_statement_aux CURLYBRACESR;
 unlabeled_statement_aux ::= unlabeled_statement unlabeled_statement_aux | unlabeled_statement;
-conditional ::= IF PARENTHESESL expression PARENTHESESR compound | KEYWORD PARENTHESESL expression PARENTHESESR compound KEYWORD compound;
+conditional ::= IF PARENTHESESL expression PARENTHESESR compound | IF PARENTHESESL expression PARENTHESESR compound ELSE compound;
 repetitive ::= WHILE PARENTHESESL expression PARENTHESESR compound;
 expression ::= simple_expression | simple_expression RELATIONALOPERATOR simple_expression;
 simple_expression ::= term add_op_term_aux | ADDITIVEOPERATOR term add_op_term_aux;
-add_op_term_aux ::= ADDITIVEOPERATOR term add_op_term_aux | ;
+add_op_term_aux ::= ADDITIVEOPERATOR term add_op_term_aux | empty;
 term ::= factor mul_op_factor_aux;
-mul_op_factor_aux ::= MULTIPLICATIVEOPERATOR factor mul_op_factor_aux | ;
+mul_op_factor_aux ::= MULTIPLICATIVEOPERATOR factor mul_op_factor_aux | empty;
 factor ::= IDENTIFIER | INTEGER | function_call | PARENTHESESL expression PARENTHESESR | EXCLAMATIONMARK factor;
 function_call ::= IDENTIFIER PARENTHESESL expression_list PARENTHESESR;
 identifier_list ::= IDENTIFIER id_aux;
-id_aux ::= COMMA IDENTIFIER id_aux | ;
-expression_list ::= expression expression_aux | ;
-expression_aux ::= COMMA expression expression_aux | ;
+id_aux ::= COMMA IDENTIFIER id_aux | empty;
+expression_list ::= expression expression_aux | empty;
+expression_aux ::= COMMA expression expression_aux | empty;
+empty::= ;

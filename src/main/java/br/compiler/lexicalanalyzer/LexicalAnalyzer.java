@@ -4,14 +4,12 @@
 
 package br.compiler.lexicalanalyzer;
 
-import br.compiler.language.Token;import br.compiler.syntacticanalyzer.Sym;
+import br.compiler.language.Token;
+import br.compiler.syntacticanalyzer.Sym;
 import java_cup.runtime.Symbol;
-import jflex.core.sym;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -593,9 +591,6 @@ public class LexicalAnalyzer implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-
-public Set<String> keyWords = Stream.of("integer", "boolean", "true", "false", "read", "write", "return", "goto", "void", "var", "var", "type", "function", "functions", "label", "if", "while").collect(Collectors.toSet());
-
 public Set<String> identifiers = new HashSet<String>();
 
 private void setIdentifiers(String identifier){
@@ -1031,11 +1026,8 @@ private void setIdentifiers(String identifier){
             // fall through
           case 33: break;
           case 5:
-            { if(keyWords.contains(yytext().toLowerCase())){
-                                    return new Symbol(Sym.KEYWORD, new Token("Palavra reservada", yytext(), yyline + 1, yycolumn));
-                                } else if(!identifiers.contains(yytext().toLowerCase())){
-                                    setIdentifiers(yytext().toLowerCase());
-                                    return new Symbol(Sym.IDENTIFIER, new Token("Identificador", yytext(), yyline + 1, yycolumn));  }
+            { setIdentifiers(yytext().toLowerCase());
+                                    return new Symbol(Sym.IDENTIFIER, new Token("Identificador", yytext(), yyline + 1, yycolumn));
             }
             // fall through
           case 34: break;
