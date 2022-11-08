@@ -312,7 +312,7 @@ public class Parser extends java_cup.runtime.lr_parser {
      public void syntax_error(Symbol current_token) {
           Token tokenObj = (Token) current_token.value;
             report_error(
-                "Syntax error at line " + (current_token.left+1) + ", column " + current_token.right + " on token < " + tokenObj.name + " > ", current_token);
+                "Syntax error at line " + (current_token.left+1) + ", column " + current_token.right + " on token < " + tokenObj.name + " ( "+ tokenObj.value +" ) > ", current_token);
         }
 
 
