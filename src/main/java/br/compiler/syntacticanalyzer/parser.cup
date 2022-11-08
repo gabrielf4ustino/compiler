@@ -70,4 +70,4 @@ identifier_list ::= IDENTIFIER id_aux;
 id_aux ::= COMMA IDENTIFIER id_aux | empty;
 expression_list ::= expression expression_aux | empty;
 expression_aux ::= COMMA expression expression_aux | empty;
-empty::= ;
+empty ::= /* nothing */;
