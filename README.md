@@ -18,34 +18,32 @@
 ## Instalação
 
 - Java local
-    - git clone [url]
-    - cd .\compilador\
-    - mvn clean install
+  - git clone [url]
+  - cd .\compilador\
+  - mvn clean install
 - Docker
-    - git clone [url]
-    - cd .\compilador\
-    - docker build -t compilador:v1.2.3 .
+  - git clone [url]
+  - cd .\compilador\
+  - docker build -t compilador:v1.2.3 .
 
 ## Execução
 - Java Local
   - java -jar .\target\compiler-v1.2.3-shaded.jar
-- Docker 
-    - docker run -i compilador:v1.2.3
+- Docker
+  - docker run -i compilador:v1.2.3
 
 ## Comandos
 
-- compile [-l | --lexical-analysis [fileName] [-o resultFileName]] [-g | --generate-analyzer [fileName]]
-- cat [fileName]
-- clear
+- compile --help
 
-# Atenção 
+# Atenção
 ### Necessário adicionar o arquivo de teste.
 - Formato do arquivo de teste
-  - .txt 
+  - .txt
 - Formato do arquivo de lexema
   - .flex
 - Formato do arquivo de gramatica
   - .cup
 ### Resultado da análise é gerado em:
-  - src/main/java/br/compiler/result/*.txt
+- ./src/main/java/br/compiler/result/
  
