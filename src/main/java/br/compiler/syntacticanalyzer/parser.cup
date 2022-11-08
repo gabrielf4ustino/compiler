@@ -3,23 +3,22 @@ package br.compiler.syntacticanalyzer;
 import java_cup.runtime.*;
 import java.util.*;
 import java.io.*;
+import br.compiler.language.Token;
 
+/* Parser code to change the way the parser reports errors (include
+   line and column number of the error). */
 parser code {:
+    public boolean syntaxErrors;
 
-    public void report_error(String message, Object info)  {
-        System.out.println("Warning - " + message + " " + info);
-    }
-
-    public void report_fatal_error(String message, Object info)  {
-        System.out.println("Error - " + message + " " + info);
-        //System.exit(-1);
-    }
-
+     public void syntax_error(Symbol current_token) {
+          Token tokenObj = (Token) current_token.value;
+            report_error(
+                "Syntax error at line " + (current_token.left+1) + ", column " + current_token.right + " on token < " + tokenObj.name + " > ", current_token);
+        }
 :};
 
-init with {:
-    System.out.println("Starting syntactic analysis...");
-:};
+init with {: System.out.println("Starting syntactic analysis..."); :};
+//scan with {: return scanner.next_token(); :};
 
 terminal EXCLAMATIONMARK, ASSIGNMENTOPERATOR, COLON, EMPTYSTATEMENT, RELATIONALOPERATOR, INTEGER, MULTIPLICATIVEOPERATOR, ADDITIVEOPERATOR, IDENTIFIER, COMMA,
          CURLYBRACESR, CURLYBRACESL, PARENTHESESR, PARENTHESESL, IF, ELSE, WHILE, FUNCTIONS, VARS, LABELS, VAR, VOID, GOTO, RETURN, BRACKETL, BRACKETR, QUOTATIONMARKS, ALTERNATIVE;
@@ -28,6 +27,11 @@ non terminal program, function, block, block_aux_1, block_aux_2, block_aux_3, la
             formal_parameters, fp_aux, formal_parameter, expression_parameter, statement, unlabeled_statement, assignment, function_call_statement, goto, return,
             compound, unlabeled_statement_aux, conditional, repetitive, expression, simple_expression, add_op_term_aux, term, mul_op_factor_aux, factor, function_call,
             identifier_list, id_aux, expression_list, expression_aux, empty;
+
+precedence left ADDITIVEOPERATOR;
+precedence left MULTIPLICATIVEOPERATOR;
+
+precedence nonassoc ASSIGNMENTOPERATOR, RELATIONALOPERATOR;
 
 start with program;
 

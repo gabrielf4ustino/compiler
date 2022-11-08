@@ -1,7 +1,7 @@
 package br.compiler;
 
 import br.compiler.language.Token;
-import br.compiler.lexicalanalyzer.LexicalAnalyzer;
+import br.compiler.lexicalanalyzer.Lexer;
 import br.compiler.syntacticanalyzer.Parser;
 import br.compiler.syntacticanalyzer.Sym;
 import java_cup.runtime.Symbol;
@@ -10,8 +10,6 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Scanner;
-
-import static br.compiler.lexicalanalyzer.LexicalAnalyzerGenerator.Generate;
 
 public class Main {
 
@@ -31,7 +29,7 @@ public class Main {
                 if (Objects.equals(input, "--help")) {
                     System.out.println("""
                             commands: compile | cat | quit | cls | clear
-                            usage: compile [-l  | --lexical-analysis [<file>] [-o <name>]] 
+                            usage: compile [-l  | --lexical-analysis [<file>] [-o <name>]]
                                            [-s  | --syntactic-analysis [<file>]]
                                            [-gl | --generate-lexical-analysis [<file>]]
                                            [-gs | --generate-syntactic-analysis [<file>]]
@@ -42,7 +40,7 @@ public class Main {
                     try {
                         input = scan.next();
                         //start the scanner analyzer with the file passed as parameter
-                        LexicalAnalyzer scanner = new LexicalAnalyzer(new FileReader(input));
+                        Lexer scanner = new Lexer(new FileReader(input));
                         Symbol token = scanner.next_token();
                         input = scan.next();
                         if (!Objects.equals(input, "-o")) {
@@ -60,10 +58,8 @@ public class Main {
                         while (token.sym != Sym.EOF) {
                             Token tokenObj = (Token) token.value;
                             String value;
-                            if (!Objects.equals(tokenObj.value, " "))
-                                value = ", " + "\"" + tokenObj.value + "\"";
-                            else
-                                value = "";
+                            if (!Objects.equals(tokenObj.value, " ")) value = ", " + "\"" + tokenObj.value + "\"";
+                            else value = "";
                             String output = ("<" + tokenObj.line + ":" + tokenObj.column + " " + tokenObj.name + value + ">\n");
                             outputStream.write(output.getBytes());
                             token = scanner.next_token();
@@ -98,12 +94,12 @@ public class Main {
                     try {
                         input = scan.next();
                         //start the parse analyzer with the file passed as parameter
-                        Parser parser = new Parser(new LexicalAnalyzer(new FileReader(input)));
+                        Parser parser = new Parser(new Lexer(new FileReader(input)));
                         parser.parse();
                         System.out.println("Syntactically correct program.");
                         System.out.print(rootPath + "> ");
                         input = scan.next();
-                    }catch (FileNotFoundException e) {
+                    } catch (FileNotFoundException e) {
                         System.out.println("compile: file '" + input + "' not found.");
                         System.out.print(rootPath + "> ");
                         if (scan.hasNext()) {
@@ -139,16 +135,36 @@ public class Main {
                         clearTerminal();
                         System.out.println("Gerando analizador léxico...");
                         //generating a new lexical analyzer
-                        if (Generate(input)) {
-                            if (System.getProperty("os.name").contains("Windows"))
-                                //rerun the program with the new lexical analyzer (in windows)
-                                new ProcessBuilder("cmd", "/c", "mvn install &&  java -jar ./target/compiler-v1.2.3-shaded.jar").inheritIO().start().waitFor();
-                            else {
-                                System.out.println("""
-                                        ##########################################################
-                                        Recompile o programa para as alterações entrarem em vigor.
-                                        ##########################################################""");
-                            }
+                        if (generateLexer(rootPath, input)) {
+                            rerunApp();
+                            System.out.print(rootPath + "> ");
+                            input = scan.next();
+                        } else {
+                            throw new FileNotFoundException();
+                        }
+                    } catch (FileNotFoundException e) {
+                        System.out.println("compile: file '" + input + "' not found.");
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
+                    } catch (IOException | InterruptedException e) {
+                        System.out.println("error: " + e.getMessage());
+                        System.out.print(rootPath + "> ");
+                        if (scan.hasNext()) {
+                            scan.nextLine();
+                        }
+                        input = scan.next();
+                    }
+                } else if (Objects.equals(input, "-gs") || Objects.equals(input, "--generate-syntactic-analysis")) {
+                    try {
+                        input = scan.next();
+                        clearTerminal();
+                        System.out.println("Gerando analizador sintático...");
+                        //generating a new lexical analyzer
+                        if (generateParser(rootPath, input)) {
+                            rerunApp();
                             System.out.print(rootPath + "> ");
                             input = scan.next();
                         } else {
@@ -223,5 +239,34 @@ public class Main {
             }
         } catch (InterruptedException | IOException ignored) {
         }
+    }
+
+    private static void rerunApp() throws IOException, InterruptedException {
+        if (System.getProperty("os.name").contains("Windows"))
+            //rerun the program with the new lexical analyzer (in windows)
+            new ProcessBuilder("cmd", "/c", "mvn install &&  java -jar ./target/compiler-v1.2.3-shaded.jar").inheritIO().start().waitFor();
+        else {
+            new ProcessBuilder("/bin/bash", "-c", "mvn install &&  java -jar ./target/compiler-v1.2.3-shaded.jar").inheritIO().start().waitFor();
+        }
+    }
+
+    private static boolean generateLexer(String rootPath, String fileName) throws IOException, InterruptedException {
+        if (System.getProperty("os.name").contains("Windows")) {
+            //rerun the program with the new lexical analyzer (in windows)
+            new ProcessBuilder("cmd", "/c", "java -jar " + rootPath + "\\src\\main\\java\\br\\compiler\\lexicalanalyzer\\jflex-full-1.8.2.jar " + fileName).inheritIO().start().waitFor();
+        } else {
+            new ProcessBuilder("/bin/bash", "-c", "java -jar " + rootPath + "/src/main/java/br/compiler/lexicalanalyzer/jflex-full-1.8.2.jar " + fileName).inheritIO().start().waitFor();
+        }
+        return true;
+    }
+
+    private static boolean generateParser(String rootPath, String fileName) throws IOException, InterruptedException {
+        if (System.getProperty("os.name").contains("Windows")) {
+            //rerun the program with the new lexical analyzer (in windows)
+            new ProcessBuilder("cmd", "/c", "java -jar " + rootPath + "\\src\\main\\java\\br\\compiler\\syntacticanalyzer\\java-cup-11b.jar -parser Parser -symbols Sym -destdir " + rootPath + "\\src\\main\\java\\br\\compiler\\syntacticanalyzer\\ " + fileName).inheritIO().start().waitFor();
+        } else {
+            new ProcessBuilder("/bin/bash", "-c", "java -jar " + rootPath + "/src/main/java/br/compiler/syntacticanalyzer/java-cup-11b.jar -parser Parser -symbols Sym -destdir " + rootPath + "/src/main/java/br/compiler/syntacticanalyzer/ " + fileName).inheritIO().start().waitFor();
+        }
+        return true;
     }
 }
