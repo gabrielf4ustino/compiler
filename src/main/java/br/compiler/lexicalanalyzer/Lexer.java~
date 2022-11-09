@@ -1097,7 +1097,7 @@ private void setIdentifiers(String identifier){
             // fall through
           case 47: break;
           case 18:
-            { return new Symbol(Sym.CURLYBRACESL, yyline, yycolumn, new Token("Abre chaves", " ", yyline + 1, yycolumn));
+            { return new Symbol(sym.CURLYBRACKETL, yyline, yycolumn, new Token("abre chaves", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 48: break;
@@ -1107,7 +1107,7 @@ private void setIdentifiers(String identifier){
             // fall through
           case 49: break;
           case 20:
-            { return new Symbol(Sym.CURLYBRACESR, yyline, yycolumn, new Token("Fecha chaves", " ", yyline + 1, yycolumn));
+            { return new Symbol(Sym.CURLYBRACKETR, yyline, yycolumn, new Token("Fecha chaves", " ", yyline + 1, yycolumn));
             }
             // fall through
           case 50: break;

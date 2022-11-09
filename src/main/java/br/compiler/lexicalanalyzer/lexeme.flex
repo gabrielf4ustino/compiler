@@ -38,8 +38,8 @@ AdditiveOperator = "+" | "-" | "||"
 Integer = 0|[1-9][0-9]*
 ParenthesesL = "("
 ParenthesesR = ")"
-CurlyBracesL = "{"
-CurlyBracesR = "}"
+CurlyBracketL = "{"
+CurlyBracketR = "}"
 BracketL = "["
 BracketR = "]"
 Alternative = "|"
@@ -77,8 +77,8 @@ CommentContent       = ( [^*] | \*+ [^/*] )*
 {Alternative}                 { return new Symbol(Sym.ALTERNATIVE, yyline, yycolumn, new Token("Alternativa", yytext(), yyline + 1, yycolumn));}
 {ParenthesesL}                { return new Symbol(Sym.PARENTHESESL, yyline, yycolumn, new Token("Abre parênteses", " ", yyline + 1, yycolumn));}
 {ParenthesesR}                { return new Symbol(Sym.PARENTHESESR, yyline, yycolumn, new Token("Fecha parênteses", " ", yyline + 1, yycolumn));}
-{CurlyBracesL}                { return new Symbol(Sym.CURLYBRACESL, yyline, yycolumn, new Token("Abre chaves", " ", yyline + 1, yycolumn));}
-{CurlyBracesR}                { return new Symbol(Sym.CURLYBRACESR, yyline, yycolumn, new Token("Fecha chaves", " ", yyline + 1, yycolumn));}
+{CurlyBracketL}               { return new Symbol(Sym.CURLYBRACKETL, yyline, yycolumn, new Token("abre chaves", " ", yyline + 1, yycolumn));}
+{CurlyBracketR}               { return new Symbol(Sym.CURLYBRACKETR, yyline, yycolumn, new Token("Fecha chaves", " ", yyline + 1, yycolumn));}
 {BracketL}                    { return new Symbol(Sym.BRACKETL, yyline, yycolumn, new Token("Abre Colchetes", " ", yyline + 1, yycolumn));}
 {BracketR}                    { return new Symbol(Sym.BRACKETR, yyline, yycolumn, new Token("Fecha Colchetes", " ", yyline + 1, yycolumn));}
 {QuotationMarks}              { return new Symbol(Sym.QUOTATIONMARKS, yyline, yycolumn, new Token("Aspas", yytext(), yyline + 1, yycolumn));}

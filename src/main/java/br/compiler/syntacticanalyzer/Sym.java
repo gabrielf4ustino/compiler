@@ -13,20 +13,20 @@ public class Sym {
   public static final int ELSE = 17;
   public static final int GOTO = 24;
   public static final int WHILE = 18;
-  public static final int CURLYBRACESR = 12;
   public static final int RETURN = 25;
   public static final int IDENTIFIER = 10;
   public static final int ALTERNATIVE = 29;
-  public static final int CURLYBRACESL = 13;
   public static final int QUOTATIONMARKS = 28;
   public static final int LABELS = 21;
   public static final int IF = 16;
   public static final int COLON = 4;
   public static final int ADDITIVEOPERATOR = 9;
   public static final int BRACKETR = 27;
+  public static final int CURLYBRACKETR = 12;
   public static final int COMMA = 11;
   public static final int EOF = 0;
   public static final int BRACKETL = 26;
+  public static final int CURLYBRACKETL = 13;
   public static final int error = 1;
   public static final int RELATIONALOPERATOR = 6;
   public static final int ASSIGNMENTOPERATOR = 3;
@@ -51,8 +51,8 @@ public class Sym {
   "ADDITIVEOPERATOR",
   "IDENTIFIER",
   "COMMA",
-  "CURLYBRACESR",
-  "CURLYBRACESL",
+  "CURLYBRACKETR",
+  "CURLYBRACKETL",
   "PARENTHESESR",
   "PARENTHESESL",
   "IF",

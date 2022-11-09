@@ -21,7 +21,7 @@ init with {: System.out.println("Starting syntactic analysis..."); :};
 //scan with {: return scanner.next_token(); :};
 
 terminal EXCLAMATIONMARK, ASSIGNMENTOPERATOR, COLON, EMPTYSTATEMENT, RELATIONALOPERATOR, INTEGER, MULTIPLICATIVEOPERATOR, ADDITIVEOPERATOR, IDENTIFIER, COMMA,
-         CURLYBRACESR, CURLYBRACESL, PARENTHESESR, PARENTHESESL, IF, ELSE, WHILE, FUNCTIONS, VARS, LABELS, VAR, VOID, GOTO, RETURN, BRACKETL, BRACKETR, QUOTATIONMARKS, ALTERNATIVE;
+         CURLYBRACKETR, CURLYBRACKETL, PARENTHESESR, PARENTHESESL, IF, ELSE, WHILE, FUNCTIONS, VARS, LABELS, VAR, VOID, GOTO, RETURN, BRACKETL, BRACKETR, QUOTATIONMARKS, ALTERNATIVE;
 
 non terminal program, function, block, block_aux_1, block_aux_2, block_aux_3, labels, variables, id_list_type_aux, functions, function_aux, body, statement_aux, type,
             formal_parameters, fp_aux, formal_parameter, expression_parameter, statement, unlabeled_statement, assignment, function_call_statement, goto, return,
@@ -35,7 +35,7 @@ precedence nonassoc ASSIGNMENTOPERATOR, RELATIONALOPERATOR;
 
 start with program;
 
-program ::= function;
+program ::= function program | empty;
 function ::= IDENTIFIER IDENTIFIER formal_parameters block | VOID IDENTIFIER formal_parameters block;
 block ::= block_aux_1 block_aux_2 block_aux_3 body;
 block_aux_1 ::= labels | empty;
@@ -43,10 +43,10 @@ block_aux_2 ::= variables | empty;
 block_aux_3 ::= functions | empty;
 labels ::= LABELS identifier_list EMPTYSTATEMENT;
 variables ::= VARS id_list_type_aux;
-id_list_type_aux ::= identifier_list COLON type EMPTYSTATEMENT id_list_type_aux | identifier_list COLON type EMPTYSTATEMENT;
+id_list_type_aux ::= identifier_list COLON type EMPTYSTATEMENT id_list_type_aux | empty;
 functions ::= FUNCTIONS function_aux;
-function_aux ::= function function_aux | function;
-body ::= CURLYBRACESL statement_aux CURLYBRACESR;
+function_aux ::= function function_aux | empty;
+body ::= CURLYBRACKETL statement_aux CURLYBRACKETR;
 statement_aux ::= statement statement_aux | empty;
 type ::= IDENTIFIER;
 formal_parameters ::= PARENTHESESL formal_parameter fp_aux PARENTHESESR | PARENTHESESL PARENTHESESR;
@@ -59,7 +59,7 @@ assignment ::= IDENTIFIER ASSIGNMENTOPERATOR expression EMPTYSTATEMENT;
 function_call_statement ::= function_call EMPTYSTATEMENT;
 goto ::= GOTO IDENTIFIER EMPTYSTATEMENT;
 return ::= RETURN expression EMPTYSTATEMENT | RETURN EMPTYSTATEMENT;
-compound ::= CURLYBRACESL unlabeled_statement_aux CURLYBRACESR;
+compound ::= CURLYBRACKETL unlabeled_statement_aux CURLYBRACKETR;
 unlabeled_statement_aux ::= unlabeled_statement unlabeled_statement_aux | unlabeled_statement;
 conditional ::= IF PARENTHESESL expression PARENTHESESR compound | IF PARENTHESESL expression PARENTHESESR compound ELSE compound;
 repetitive ::= WHILE PARENTHESESL expression PARENTHESESR compound;
