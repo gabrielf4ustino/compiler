@@ -14,15 +14,15 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        //clear terminal
+        // Clear terminal
         clearTerminal();
-        //start a new prompt scanner
+        // Start a new prompt scanner
         Scanner scan = new Scanner(System.in);
         String rootPath = Paths.get("").toAbsolutePath().toString();
         System.out.print(rootPath + "> ");
-        //read a word in prompt
+        // Read a word in prompt
         String input = scan.next();
-        //if input == quit end the program
+        // If input == quit end the program
         while (!Objects.equals(input, "quit")) {
             if (Objects.equals(input, "compile")) {
                 input = scan.next();
@@ -39,7 +39,7 @@ public class Main {
                 } else if ((Objects.equals(input, "-l") || Objects.equals(input, "--lexical-analysis"))) {
                     try {
                         input = scan.next();
-                        //start the scanner analyzer with the file passed as parameter
+                        // Start the scanner analyzer with the file passed as parameter
                         Lexer scanner = new Lexer(new FileReader(input));
                         Symbol token = scanner.next_token();
                         input = scan.next();
@@ -47,14 +47,14 @@ public class Main {
                             throw new RuntimeException();
                         }
                         input = scan.next();
-                        //make the path "result" if it does not exist
+                        // Make the path "result" if it does not exist
                         File theDir = new File(rootPath + "/src/main/java/br/compiler/result");
                         if (!theDir.exists()) {
                             theDir.mkdirs();
                         }
-                        //making the result file with the name passed as parameter
+                        // Making the result file with the name passed as parameter
                         FileOutputStream outputStream = new FileOutputStream(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
-                        //writing result in file
+                        // Writing result in file
                         while (token.sym != Sym.EOF) {
                             Token tokenObj = (Token) token.value;
                             String value;
@@ -93,7 +93,7 @@ public class Main {
                 } else if ((Objects.equals(input, "-s") || Objects.equals(input, "--syntactic-analysis"))) {
                     try {
                         input = scan.next();
-                        //start the parse analyzer with the file passed as parameter
+                        // Start the parse analyzer with the file passed as parameter
                         Parser parser = new Parser(new Lexer(new FileReader(input)));
                         parser.parse();
                         System.out.println("Syntactically correct program.");
@@ -134,7 +134,7 @@ public class Main {
                         input = scan.next();
                         clearTerminal();
                         System.out.println("Gerando analizador léxico...");
-                        //generating a new lexical analyzer
+                        // Generating a new lexical analyzer
                         if (generateLexer(rootPath, input)) {
                             rerunApp();
                             System.out.print(rootPath + "> ");
@@ -162,7 +162,7 @@ public class Main {
                         input = scan.next();
                         clearTerminal();
                         System.out.println("Gerando analizador sintático...");
-                        //generating a new lexical analyzer
+                        // Generating a new lexical analyzer
                         if (generateParser(rootPath, input)) {
                             rerunApp();
                             System.out.print(rootPath + "> ");
@@ -197,11 +197,11 @@ public class Main {
             } else if (Objects.equals(input, "cat")) {
                 try {
                     input = scan.next();
-                    //reading the result file
+                    // Reading the result file
                     FileReader file = new FileReader(rootPath + "/src/main/java/br/compiler/result/" + input + ".txt");
                     BufferedReader fileReader = new BufferedReader(file);
                     String line = fileReader.readLine();
-                    //printing the result file in prompt
+                    // Printing the result file in prompt
                     while (line != null) {
                         System.out.println(line);
                         line = fileReader.readLine();
@@ -225,6 +225,7 @@ public class Main {
         }
     }
 
+    // Function that's run a clear command in terminal
     private static void clearTerminal() {
         try {
             if (System.getProperty("os.name").contains("Windows"))
@@ -241,6 +242,7 @@ public class Main {
         }
     }
 
+    // Function that's rerun a mvn install and the application
     private static void rerunApp() throws IOException, InterruptedException {
         if (System.getProperty("os.name").contains("Windows"))
             //rerun the program with the new lexical analyzer (in windows)
@@ -250,6 +252,7 @@ public class Main {
         }
     }
 
+    // Function that's run in terminal the build command of lexer analyzer
     private static boolean generateLexer(String rootPath, String fileName) throws IOException, InterruptedException {
         if (System.getProperty("os.name").contains("Windows")) {
             //rerun the program with the new lexical analyzer (in windows)
@@ -260,6 +263,7 @@ public class Main {
         return true;
     }
 
+    // Function that's run in terminal the build command of parser analyzer
     private static boolean generateParser(String rootPath, String fileName) throws IOException, InterruptedException {
         if (System.getProperty("os.name").contains("Windows")) {
             //rerun the program with the new lexical analyzer (in windows)
