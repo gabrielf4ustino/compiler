@@ -4,7 +4,7 @@
 
 ## Status do Projeto
 
-- **EM DESENVOLVIMENTO**
+- **CONCLUÍDO**
 
 ## Sobre
 
