@@ -1,49 +1,48 @@
-## Versão Atual
+## Current version
 
 - **v1.2.3**
 
-## Status do Projeto
+## Project Status
 
-- **CONCLUÍDO**
+- **CONCLUDED**
 
-## Sobre
+## About
 
-- Projeto de um compilador implementado em java com JFlex e JavaCUP.
+- Project of a compiler implemented in Java with JFlex and JavaCUP.
 
-## Pré requisitos
+## Prerequisites
 
 - JDK 18
 - Maven 3.8.*
 
-## Instalação
+## Installation
 
-- Java local
+- Local Java
   - git clone [url]
-  - cd .\compilador\
+  - cd .\compiler\
   - mvn clean install
-- Docker
+-Docker
   - git clone [url]
-  - cd .\compilador\
-  - docker build -t compilador:v1.2.3 .
+  - cd .\compiler\
+  - docker build -t compiler:v1.2.3 .
 
-## Execução
-- Java Local
+## Execution
+- Local Java
   - java -jar .\target\compiler-v1.2.3-shaded.jar
-- Docker
-  - docker run -i compilador:v1.2.3
+-Docker
+  - docker run -i compiler:v1.2.3
 
-## Comandos
+## Commands
 
 - compile --help
 
-# Atenção
-### Necessário adicionar o arquivo de teste.
-- Formato do arquivo de teste
+# Attention
+### Need to add the test file.
+- Test file format
   - .txt
-- Formato do arquivo de lexema
+- Lexeme file format
   - .flex
-- Formato do arquivo de gramatica
+- Grammar file format
   - .cup
-### Resultado da análise é gerado em:
+### Analysis result is generated in:
 - ./src/main/java/br/compiler/result/
- 
